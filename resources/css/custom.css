@@ -1,91 +1,5 @@
 /* resources/css/custom.css */
 
-/* ===== Category Sell Card ===== */
-/* .sell-category-card {
-    width: 100%;
-    border: 1px solid #E5E7EB;
-    background: #fff;
-    color: #111827;
-    transition: all .3s ease;
-} */
-
-/* ขนาดตาม Figma (Desktop) */
-/* @media (min-width: 768px) {
-    .sell-category-card {
-        width: 178px;
-        height: 240px;
-    }
-} */
-
-/* .sell-category-card .card-text {
-    color: #111827;
-    transition: all .3s ease;
-}
-
-.sell-category-card .icon-default {
-    opacity: 1;
-    transform: scale(1);
-    transition: all .3s ease;
-}
-
-.sell-category-card .icon-active {
-    opacity: 0;
-    transform: scale(.9);
-    transition: all .3s ease;
-} */
-
-/* Hover (เฉพาะที่ยังไม่ active) */
-/* .sell-category-card:not(.is-active):hover {
-    background: #285F43;
-    border-color: #285F43;
-    color: #fff;
-    transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 14px 30px rgba(40, 95, 67, 0.28);
-}
-
-.sell-category-card:not(.is-active):hover .card-text {
-    color: #fff !important;
-    font-weight: 700;
-}
-
-.sell-category-card:not(.is-active):hover .icon-default {
-    opacity: 0;
-    transform: scale(.9);
-}
-
-.sell-category-card:not(.is-active):hover .icon-active {
-    opacity: 1;
-    transform: scale(1);
-} */
-
-/* Active */
-/* .sell-category-card.is-active {
-    background: #285F43 !important;
-    border-color: #285F43 !important;
-    color: #fff !important;
-    box-shadow: 0 14px 30px rgba(40, 95, 67, 0.28) !important;
-}
-
-@media (min-width: 768px) {
-    .sell-category-card.is-active {
-        transform: scale(1.03);
-    }
-}
-
-.sell-category-card.is-active .card-text {
-    color: #fff !important;
-    font-weight: 700;
-}
-
-.sell-category-card.is-active .icon-default {
-    opacity: 0 !important;
-    transform: scale(.9) !important;
-}
-
-.sell-category-card.is-active .icon-active {
-    opacity: 1 !important;
-    transform: scale(1) !important;
-} */
 
 .whyus-circle {
     width: 96px;
@@ -126,8 +40,8 @@
 
  @media (min-width: 1024px) {
      .review-slide {
-         flex: 0 0 25% !important;
-         max-width: 25% !important;
+         flex: 0 0 20%;
+         max-width: 20%;
      }
  }
 
@@ -146,15 +60,14 @@
      }
  }
 
- /* กัน dropdown เพี้ยน/โดนทับ */
- /* #estimate-form-wrap {
-     position: relative;
-     z-index: 9999;
- } */
+ @media (min-width: 1024px) {
+     .review-slide {
+         flex: 0 0 20% !important;
+         max-width: 20% !important;
+     }
+ }
 
- /* #estimate-form-wrap .choices__list--dropdown {
-     z-index: 9999;
- } */
+
 
  .social-icon {
      width: 20px;
@@ -252,35 +165,44 @@
 
 #sell-estimate-section .sell-category-card .icon-default {
     opacity: 1;
+    visibility: visible;
     transform: scale(1);
 }
 
 #sell-estimate-section .sell-category-card .icon-active {
     opacity: 0;
+    visibility: hidden;
     transform: scale(.94);
 }
 
-#sell-estimate-section .sell-category-card:not(.is-active):hover {
-    background: #285F43;
-    border-color: #285F43;
-    color: #FFFFFF;
-    transform: translateY(-2px);
-    box-shadow: 0 14px 30px rgba(40, 95, 67, 0.20);
+/* hover ให้ใช้เฉพาะ desktop / อุปกรณ์ที่ hover ได้จริง */
+@media (hover: hover) and (pointer: fine) {
+    #sell-estimate-section .sell-category-card:not(.is-active):hover {
+        background: #285F43;
+        border-color: #285F43;
+        color: #FFFFFF;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px rgba(40, 95, 67, 0.20);
+    }
+
+    #sell-estimate-section .sell-category-card:not(.is-active):hover .card-text {
+        color: #FFFFFF;
+    }
+
+    #sell-estimate-section .sell-category-card:not(.is-active):hover .icon-default {
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(.94);
+    }
+
+    #sell-estimate-section .sell-category-card:not(.is-active):hover .icon-active {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+    }
 }
 
-#sell-estimate-section .sell-category-card:not(.is-active):hover .card-text {
-    color: #FFFFFF;
-}
 
-#sell-estimate-section .sell-category-card:not(.is-active):hover .icon-default {
-    opacity: 0;
-    transform: scale(.94);
-}
-
-#sell-estimate-section .sell-category-card:not(.is-active):hover .icon-active {
-    opacity: 1;
-    transform: scale(1);
-}
 
 #sell-estimate-section .sell-category-card.is-active {
     background: #285F43;
@@ -295,11 +217,13 @@
 
 #sell-estimate-section .sell-category-card.is-active .icon-default {
     opacity: 0;
+    visibility: hidden;
     transform: scale(.94);
 }
 
 #sell-estimate-section .sell-category-card.is-active .icon-active {
     opacity: 1;
+    visibility: visible;
     transform: scale(1);
 }
 

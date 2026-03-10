@@ -97,14 +97,14 @@ $categories = [
 'name' => 'Smartphone',
 'label_th' => 'iPhone',
 'icon_default' => 'assets/media/icons/checked.gif',
-'icon_active' => 'assets/media/icons/digital-creative-01.gif',
+'icon_active' => 'assets/media/icons/checked-01.gif',
 ],
 [
 'key' => 'tablet',
 'name' => 'Tablet',
 'label_th' => 'Tablet',
 'icon_default' => 'assets/media/icons/digital-creative.gif',
-'icon_active' => 'assets/media/icons/checked-01.gif',
+'icon_active' => 'assets/media/icons/digital-creative-01.gif',
 ],
 [
 'key' => 'smartwatch',
@@ -134,8 +134,8 @@ $activeKey = 'smartphone'; // default active
 <section id="sell-estimate-section" class="container mx-auto px-4 sm:px-6">
     <div class="bg-white rounded-3xl shadow-lg p-6 sm:p-8 md:p-10 -mt-16 sm:-mt-20 md:-mt-24 relative z-10">
 
-        <h2 class="text-center text-[#285F43] leading-snug font-bold
-                   text-[16px] sm:text-[22px] md:text-[30px] lg:text-[34px] mb-6 sm:mb-8">
+        <h2 class="leading-snug 
+                   font-medium mb-6 text-[26px] md:text-[26px] lg:text-[38px] text-[#285F43] text-center mb-6 sm:mb-8">
             เลือกที่ต้องการขาย
         </h2>
 
@@ -155,17 +155,17 @@ $activeKey = 'smartphone'; // default active
                         <button
                             type="button"
                             class="sell-category-card {{ $isActive ? 'is-active' : '' }}
-                               relative rounded-2xl text-center cursor-pointer
-                               h-[140px] sm:h-[160px] md:h-[240px]
-                               px-3 py-4 sm:px-4 sm:py-5 md:px-4 md:py-6
-                               flex flex-col items-center justify-center
-                               focus:outline-none focus:ring-2 focus:ring-[#285F43]/30"
+       relative rounded-2xl text-center cursor-pointer
+       h-[140px] sm:h-[160px] md:h-[240px]
+       px-3 py-4 sm:px-4 sm:py-5 md:px-4 md:py-6
+       flex flex-col items-center justify-center
+       focus:outline-none focus:ring-2 focus:ring-[#285F43]/30"
                             data-key="{{ $cat['key'] }}"
                             data-option="{{ $cat['label_th'] }}"
                             aria-pressed="{{ $isActive ? 'true' : 'false' }}">
 
                             {{-- ICON --}}
-                            <div class="icon-wrap relative mb-3 sm:mb-4 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14">
+                            <div class="icon-wrap relative mb-2 w-[70%] aspect-square max-w-[110px] sm:max-w-[120px] md:max-w-[150px]">
                                 <img
                                     src="{{ asset($cat['icon_default']) }}"
                                     alt="{{ $cat['name'] }}"
@@ -249,6 +249,11 @@ $activeKey = 'smartphone'; // default active
         let index = 0;
         let perPage = 5;
 
+        let startX = 0;
+        let startY = 0;
+        let isDragging = false;
+        let isSwiping = false;
+
         function calcPerPage() {
             return window.innerWidth >= 768 ? 5 : 3;
         }
@@ -264,8 +269,7 @@ $activeKey = 'smartphone'; // default active
 
         function getStepWidth() {
             if (!slides.length) return 0;
-            const slide = slides[0];
-            return slide.getBoundingClientRect().width;
+            return slides[0].getBoundingClientRect().width;
         }
 
         function renderDots() {
@@ -300,7 +304,7 @@ $activeKey = 'smartphone'; // default active
             updateDotsActive();
         }
 
-        function setActiveCategory(key, optionLabel = '') {
+        function setActiveCategory(key) {
             categoryCards.forEach((card) => {
                 const isActive = card.dataset.key === key;
                 card.classList.toggle('is-active', isActive);
@@ -324,43 +328,69 @@ $activeKey = 'smartphone'; // default active
         }
 
         categoryCards.forEach((card) => {
-            card.addEventListener('click', function() {
+            card.addEventListener('click', function(e) {
+                if (isSwiping) {
+                    e.preventDefault();
+                    return;
+                }
+
                 const key = this.dataset.key || '';
-                const option = this.dataset.option || '';
-                setActiveCategory(key, option);
+                setActiveCategory(key);
             });
         });
 
         if (categorySelect) {
             categorySelect.addEventListener('change', function() {
-                setActiveCategory(this.value, this.options[this.selectedIndex]?.text || '');
+                setActiveCategory(this.value);
             });
         }
 
-        let startX = 0;
-        let dragging = false;
-
         viewport.addEventListener('touchstart', (e) => {
-            dragging = true;
+            if (!e.touches || !e.touches.length) return;
+
+            isDragging = true;
+            isSwiping = false;
             startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        }, {
+            passive: true
+        });
+
+        viewport.addEventListener('touchmove', (e) => {
+            if (!isDragging || !e.touches || !e.touches.length) return;
+
+            const moveX = e.touches[0].clientX;
+            const moveY = e.touches[0].clientY;
+
+            const diffX = Math.abs(moveX - startX);
+            const diffY = Math.abs(moveY - startY);
+
+            if (diffX > 10 && diffX > diffY) {
+                isSwiping = true;
+            }
         }, {
             passive: true
         });
 
         viewport.addEventListener('touchend', (e) => {
-            if (!dragging) return;
-            dragging = false;
+            if (!isDragging) return;
+
+            isDragging = false;
 
             const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : startX;
             const diff = endX - startX;
 
-            if (Math.abs(diff) < 30) return;
-
-            if (diff < 0) {
-                go(index + 1);
-            } else {
-                go(index - 1);
+            if (isSwiping && Math.abs(diff) >= 30) {
+                if (diff < 0) {
+                    go(index + 1);
+                } else {
+                    go(index - 1);
+                }
             }
+
+            setTimeout(() => {
+                isSwiping = false;
+            }, 50);
         }, {
             passive: true
         });
@@ -374,7 +404,7 @@ $activeKey = 'smartphone'; // default active
 
 {{-- SELL METHOD (APPLE-LIKE TABS + SPEC) --}}
 <section class="py-32 text-center">
-    <h2 class="font-medium mb-6" style="color:#285F43; font-size:35px;">
+    <h2 class="font-medium mb-6 text-[26px] md:text-[26px] lg:text-[38px] text-[#285F43] text-center">
         สามารถขายได้ 2 วิธีง่ายๆ
     </h2>
 
@@ -557,7 +587,7 @@ $activeKey = 'smartphone'; // default active
 
 {{-- WHY US --}}
 <section class="bg-white py-32">
-    <h2 class="font-medium mb-6 text-center" style="color:#285F43; font-size:35px;">
+    <h2 class="font-medium mb-6 text-[26px] md:text-[26px] lg:text-[38px] text-[#285F43] text-center">
         ทำไมถึงเลือกเรา
     </h2>
 
@@ -624,7 +654,7 @@ $activeKey = 'smartphone'; // default active
 
 {{-- REVIEWS (CAROUSEL LIKE IMAGE) --}}
 <section class="py-20 bg-gray-50">
-    <h2 class="text-center font-medium mb-12" style="color:#285F43; font-size:35px;">
+    <h2 class="font-medium mb-6 text-[26px] md:text-[26px] lg:text-[38px] text-[#285F43] text-center">
         รีวิวความประทับใจ
     </h2>
 
@@ -652,7 +682,6 @@ $activeKey = 'smartphone'; // default active
             {{-- Track --}}
             <div class="flex transition-transform duration-300 ease-out" id="review-track">
                 @php
-                // ตัวอย่าง data (คุณเปลี่ยนเป็นข้อมูลจริงได้)
                 $reviews = [
                 ['img' => 'assets/media/review/review-1.png', 'title' => 'พนักงาน บริการดีมาก', 'sub' => 'รวดเร็วทันใจ', 'by' => 'By 093xxx163', 'model' => 'ขายสินค้า iPhone 15 Pro', 'rate' => '5.0'],
                 ['img' => 'assets/media/review/review-2.png', 'title' => 'พนักงาน บริการดีมาก', 'sub' => 'รวดเร็วทันใจ', 'by' => 'By 093xxx163', 'model' => 'ขายสินค้า iPhone 15 Pro', 'rate' => '5.0'],
@@ -664,22 +693,23 @@ $activeKey = 'smartphone'; // default active
                 @endphp
 
                 @foreach ($reviews as $idx => $r)
-                <div class="review-slide basis-1/2 md:basis-1/2 lg:basis-1/4 shrink-0 px-2">
-                    <div class="bg-white shadow-sm rounded-none">
-                        {{-- รูป: โค้งเฉพาะด้านบน --}}
+                <div class="review-slide basis-1/2 md:basis-1/2 lg:basis-[20%] shrink-0 px-2">
+                    <div class="bg-white shadow-sm rounded-none h-full">
+                        {{-- รูป --}}
                         <div class="px-4 pt-4">
-                            <img
-                                src="{{ asset($r['img']) }}"
-                                alt="Review {{ $idx+1 }}"
-                                class="w-full object-cover rounded-t-2xl"
-                                style="height:320px;">
+                            <div class="review-image-wrap w-full overflow-hidden rounded-t-2xl aspect-[4/3] md:aspect-[4/5] lg:aspect-[4/5]">
+                                <img
+                                    src="{{ asset($r['img']) }}"
+                                    alt="Review {{ $idx + 1 }}"
+                                    class="w-full h-full object-contain">
+                            </div>
                         </div>
 
                         <div class="px-4 pb-5 pt-3 text-left">
-                            {{-- ดาว + คะแนน (เหมือนรูป) --}}
+                            {{-- ดาว + คะแนน --}}
                             <div class="flex items-center justify-between mb-2">
                                 <div class="flex items-center gap-1">
-                                    @for ($s=0; $s<5; $s++)
+                                    @for ($s = 0; $s < 5; $s++)
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="#F5B301" aria-hidden="true">
                                         <path d="M12 2l2.9 6.1 6.7.9-4.9 4.7 1.2 6.6L12 17.9 6.1 20.3l1.2-6.6L2.4 9l6.7-.9L12 2z" />
                                         </svg>
@@ -708,8 +738,6 @@ $activeKey = 'smartphone'; // default active
         <div class="flex justify-center gap-2 mt-8" id="review-dots"></div>
     </div>
 
-
-
     <script>
         (function() {
             const viewport = document.getElementById('review-viewport');
@@ -722,19 +750,18 @@ $activeKey = 'smartphone'; // default active
 
             const slides = Array.from(track.querySelectorAll('.review-slide'));
             let index = 0;
-            let perPage = 4;
+            let perPage = 5;
 
-            // ====== AUTO PLAY SETTINGS ======
             const AUTO_PLAY = true;
-            const AUTO_INTERVAL_MS = 3500; // ปรับความเร็วได้ (ms)
+            const AUTO_INTERVAL_MS = 3500;
             let timer = null;
             let isHovering = false;
 
             function calcPerPage() {
                 const w = window.innerWidth;
-                if (w >= 1024) return 4;
-                if (w >= 768) return 2;
-                return 2;
+                if (w >= 1024) return 5; // desktop = 5 ช่อง
+                if (w >= 768) return 2; // tablet = 2 ช่อง
+                return 2; // mobile = 2 ช่อง
             }
 
             function pagesCount() {
@@ -830,30 +857,34 @@ $activeKey = 'smartphone'; // default active
                 resetAutoplay();
             }
 
-            // events
-            if (prev) prev.addEventListener('click', () => {
-                go(index - 1);
-                resetAutoplay();
-            });
-            if (next) next.addEventListener('click', () => {
-                go(index + 1);
-                resetAutoplay();
-            });
+            if (prev) {
+                prev.addEventListener('click', () => {
+                    go(index - 1);
+                    resetAutoplay();
+                });
+            }
 
-            // pause on hover
+            if (next) {
+                next.addEventListener('click', () => {
+                    go(index + 1);
+                    resetAutoplay();
+                });
+            }
+
             viewport.addEventListener('mouseenter', () => {
                 isHovering = true;
             });
+
             viewport.addEventListener('mouseleave', () => {
                 isHovering = false;
             });
 
-            // mobile touch: pause while dragging (ง่ายๆ)
             viewport.addEventListener('touchstart', () => {
                 isHovering = true;
             }, {
                 passive: true
             });
+
             viewport.addEventListener('touchend', () => {
                 isHovering = false;
             }, {
@@ -862,13 +893,11 @@ $activeKey = 'smartphone'; // default active
 
             window.addEventListener('resize', refresh);
 
-            // init
             refresh();
             startAutoplay();
         })();
     </script>
 </section>
-
 {{-- Footer --}}
 
 
