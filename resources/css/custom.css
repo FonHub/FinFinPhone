@@ -45,6 +45,8 @@
      .review-slide {
          flex: 0 0 20%;
          max-width: 20%;
+         flex: 0 0 20%;
+         max-width: 20%;
      }
  }
 
@@ -62,6 +64,14 @@
          max-width: 20%;
      }
  }
+
+ @media (min-width: 1024px) {
+     .review-slide {
+         flex: 0 0 20% !important;
+         max-width: 20% !important;
+     }
+ }
+
 
  @media (min-width: 1024px) {
      .review-slide {
@@ -169,11 +179,13 @@
 #sell-estimate-section .sell-category-card .icon-default {
     opacity: 1;
     visibility: visible;
+    visibility: visible;
     transform: scale(1);
 }
 
 #sell-estimate-section .sell-category-card .icon-active {
     opacity: 0;
+    visibility: hidden;
     visibility: hidden;
     transform: scale(.94);
 }
@@ -187,7 +199,19 @@
         transform: translateY(-2px);
         box-shadow: 0 14px 30px rgba(40, 95, 67, 0.20);
     }
+/* hover ให้ใช้เฉพาะ desktop / อุปกรณ์ที่ hover ได้จริง */
+@media (hover: hover) and (pointer: fine) {
+    #sell-estimate-section .sell-category-card:not(.is-active):hover {
+        background: #285F43;
+        border-color: #285F43;
+        color: #FFFFFF;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px rgba(40, 95, 67, 0.20);
+    }
 
+    #sell-estimate-section .sell-category-card:not(.is-active):hover .card-text {
+        color: #FFFFFF;
+    }
     #sell-estimate-section .sell-category-card:not(.is-active):hover .card-text {
         color: #FFFFFF;
     }
@@ -197,6 +221,19 @@
         visibility: hidden;
         transform: scale(.94);
     }
+    #sell-estimate-section .sell-category-card:not(.is-active):hover .icon-default {
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(.94);
+    }
+
+    #sell-estimate-section .sell-category-card:not(.is-active):hover .icon-active {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+    }
+}
+
 
     #sell-estimate-section .sell-category-card:not(.is-active):hover .icon-active {
         opacity: 1;
@@ -221,11 +258,13 @@
 #sell-estimate-section .sell-category-card.is-active .icon-default {
     opacity: 0;
     visibility: hidden;
+    visibility: hidden;
     transform: scale(.94);
 }
 
 #sell-estimate-section .sell-category-card.is-active .icon-active {
     opacity: 1;
+    visibility: visible;
     visibility: visible;
     transform: scale(1);
 }
