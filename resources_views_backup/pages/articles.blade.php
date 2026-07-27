@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'ขายสินค้า | Fin Fin Phone')
+@section('title', 'ขายสินค้า | Cashkub')
 
 @section('content')
 <section class="py-16">

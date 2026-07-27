@@ -4,7 +4,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                 <div>
                     <h3 class="text-[22px] md:text-[24px] font-bold mb-4">
-                        Fin Fin Phone Co., Ltd.
+                        Cashkub Co., Ltd.
                     </h3>
 
                     <p class="text-[14px] md:text-[15px] leading-7 text-white/95 mb-5">
@@ -28,7 +28,7 @@
                     <ul class="space-y-3 text-[14px] md:text-[15px]">
                         <li><a href="{{ route('faq') }}" class="text-white/95 hover:text-white hover:underline transition">คำถามพบบ่อย</a></li>
                         <li><a href="{{ route('cancel.selling') }}" class="text-white/95 hover:text-white hover:underline transition">วิธีการยกเลิกการขาย</a></li>
-                        <li><a href="{{ route('sell.at.finfinphone') }}" class="text-white/95 hover:text-white hover:underline transition"> ขายที่ Fin Fin Phone</a></li>
+                        <li><a href="{{ route('sell.at.Cashkub') }}" class="text-white/95 hover:text-white hover:underline transition"> ขายที่ Cashkub</a></li>
                         <li><a href="{{ route('how.to.sell') }}" class="text-white/95 hover:text-white hover:underline transition">วิธีการขายสินค้า</a></li>
                         <li><a href="{{ route('how.to.get.paid') }}" class="text-white/95 hover:text-white hover:underline transition">บริการรับเงิน</a></li>
                     </ul>

@@ -4,10 +4,10 @@
             <a href="{{ route('home') }}" class="flex items-center gap-2 shrink-0">
                 <img
                     src="{{ asset('assets/media/svg/brand-logos/apple-black.svg') }}"
-                    alt="Fin Fin Phone Logo"
+                    alt="Cashkub Logo"
                     class="w-7 h-7 object-contain" />
                 <span class="text-[#1E5B3A] font-extrabold text-[24px] leading-none tracking-tight">
-                    Fin Fin Phone
+                    Cashkub
                 </span>
             </a>
 
