@@ -184,12 +184,15 @@ Route::prefix('admin')->middleware('admin.auth')->group(function () {
     Route::get('/mobile-models/brand/{brand}', [MobileModelController::class, 'indexByBrand']);
     Route::get('/mobile-models/category/{category}', [MobileModelController::class, 'index']);
     Route::get('/mobile-models/category/{category}/create', [MobileModelController::class, 'create']);
+    Route::get('/mobile-models/brand/{brand}/create', [MobileModelController::class, 'createByBrand']);
     Route::post('/mobile-models/store', [MobileModelController::class, 'store']);
     Route::get('/mobile-models/{id}/edit', [MobileModelController::class, 'edit']);
     Route::post('/mobile-models/{id}/update', [MobileModelController::class, 'update']);
     Route::post('/mobile-models/delete', [MobileModelController::class, 'destroy']);
     Route::get('/mobile-models/category/{category}/export', [MobileModelController::class, 'export']);
     Route::get('/mobile-models/category/{category}/export-template', [MobileModelController::class, 'exportTemplate']);
+    Route::get('/mobile-models/brand/{brand}/export', [MobileModelController::class, 'exportByBrand']);
+    Route::get('/mobile-models/brand/{brand}/export-template', [MobileModelController::class, 'exportTemplateByBrand']);
     Route::post('/mobile-models/import', [MobileModelController::class, 'import']);
 
 

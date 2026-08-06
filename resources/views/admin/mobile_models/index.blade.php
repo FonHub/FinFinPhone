@@ -13,11 +13,36 @@
         $selectedCategory = $selectedCategory ?? ($category ?? null);
         $selectedBrand = $selectedBrand ?? null;
 
-        $categoryId = $selectedCategory->id ?? request()->route('category');
-        $categoryName = $selectedCategory->category_name ?? 'ทั้งหมด';
+        $categoryId = $selectedCategory?->id ?? request()->route('category');
 
-        $brandId = $selectedBrand->id ?? request()->route('brand');
-        $brandName = $selectedBrand->name ?? 'ทั้งหมด';
+        $brandId = $selectedBrand?->id ?? ($selectedCategory?->mobile_brand_id ?? request()->route('brand'));
+
+        $categoryName = $selectedCategory?->category_name ?? 'ทั้งหมด';
+        $brandName = $selectedBrand?->name ?? 'ทั้งหมด';
+
+        /*
+    |--------------------------------------------------------------------------
+    | ตรวจสอบว่าหน้านี้เข้าผ่านทางใด
+    |--------------------------------------------------------------------------
+    */
+
+        $pageScope = !empty($categoryId) ? 'category' : 'brand';
+        $scopeId = $pageScope === 'category' ? $categoryId : $brandId;
+
+        $exportTemplateUrl =
+            $pageScope === 'category'
+                ? url('admin/mobile-models/category/' . $categoryId . '/export-template')
+                : url('admin/mobile-models/brand/' . $brandId . '/export-template');
+
+        $exportUrl =
+            $pageScope === 'category'
+                ? url('admin/mobile-models/category/' . $categoryId . '/export')
+                : url('admin/mobile-models/brand/' . $brandId . '/export');
+
+        $createUrl =
+            $pageScope === 'category'
+                ? url('admin/mobile-models/category/' . $categoryId . '/create')
+                : url('admin/mobile-models/brand/' . $brandId . '/create');
     @endphp
 
     <div
@@ -97,24 +122,27 @@
                                         </div>
 
                                         <div class="flex flex-wrap gap-2">
-                                            <a href="{{ url('admin/mobile-models/category/' . $categoryId . '/export-template') }}"
-                                                class="btn btn-outline-secondary">
-                                                <i data-lucide="file-down" class="w-4 h-4 mr-2"></i>
-                                                ดาวน์โหลด Template
-                                            </a>
+                                            @if ($scopeId)
+                                                <a href="{{ $exportTemplateUrl }}" class="btn btn-outline-secondary">
+                                                    <i data-lucide="file-down" class="w-4 h-4 mr-2"></i>
+                                                    ดาวน์โหลด Template
+                                                </a>
 
-                                            <a href="{{ url('admin/mobile-models/category/' . $categoryId . '/export') }}"
-                                                class="btn text-white"
-                                                style="background-color:#0f9d8a; border-color:#0f9d8a;">
-                                                <i data-lucide="download" class="w-4 h-4 mr-2"></i>
-                                                Export Excel
-                                            </a>
+                                                <a href="{{ $exportUrl }}" class="btn text-white"
+                                                    style="background-color:#0f9d8a; border-color:#0f9d8a;">
+                                                    <i data-lucide="download" class="w-4 h-4 mr-2"></i>
+                                                    Export Excel
+                                                </a>
 
-                                            <a href="{{ url('admin/mobile-models/category/' . $categoryId . '/create') }}"
-                                                class="btn btn-primary">
-                                                <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
-                                                เพิ่มโมเดลสินค้า
-                                            </a>
+                                                <a href="{{ $createUrl }}" class="btn btn-primary">
+                                                    <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+                                                    เพิ่มโมเดลสินค้า
+                                                </a>
+                                            @else
+                                                <div class="alert alert-warning">
+                                                    ไม่พบรหัสแบรนด์หรือรหัสประเภทสินค้า
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -122,8 +150,10 @@
                                         <form action="{{ url('admin/mobile-models/import') }}" method="POST"
                                             enctype="multipart/form-data">
                                             @csrf
+                                            <input type="hidden" name="scope" value="{{ $pageScope }}">
 
                                             <input type="hidden" name="mobile_brand_id" value="{{ $brandId }}">
+
                                             <input type="hidden" name="mobile_product_category_id"
                                                 value="{{ $categoryId }}">
 
@@ -171,22 +201,42 @@
                                     <table class="table table-report mb-0" id="models-table">
                                         <thead class="bg-slate-50">
                                             <tr>
-                                                <th class="whitespace-nowrap text-center">ลำดับ</th>
-                                                <th class="whitespace-nowrap">แบรนด์สินค้า</th>
-                                                <th class="whitespace-nowrap">ประเภทสินค้า</th>
-                                                <th class="whitespace-nowrap">ชื่อโมเดล</th>
-                                                <th class="whitespace-nowrap text-center">สถานะ</th>
-                                                <th class="text-center whitespace-nowrap">ACTIONS</th>
+                                                <th class="whitespace-nowrap text-center">
+                                                    ลำดับการแสดงผล
+                                                </th>
+
+                                                <th class="whitespace-nowrap">
+                                                    แบรนด์สินค้า
+                                                </th>
+
+                                                <th class="whitespace-nowrap">
+                                                    ประเภทสินค้า
+                                                </th>
+
+                                                <th class="whitespace-nowrap">
+                                                    ชื่อโมเดล
+                                                </th>
+
+                                                <th class="whitespace-nowrap text-center">
+                                                    สถานะ
+                                                </th>
+
+                                                <th class="text-center whitespace-nowrap">
+                                                    ACTIONS
+                                                </th>
                                             </tr>
                                         </thead>
 
                                         <tbody>
-                                            @forelse ($models as $key => $value)
+                                            @forelse ($models as $value)
                                                 <tr class="intro-x">
-                                                    <td class="text-center">{{ $key + 1 }}</td>
+                                                    <td class="text-center font-medium"
+                                                        data-order="{{ (int) $value->sort_order }}">
+                                                        {{ (int) $value->sort_order }}
+                                                    </td>
 
                                                     <td>
-                                                        {{ $value->brand->name ?? $brandName }}
+                                                        {{ $value->brand->name ?? '-' }}
                                                     </td>
 
                                                     <td>
@@ -194,7 +244,7 @@
                                                     </td>
 
                                                     <td>
-                                                        {{ $value->name  }}
+                                                        {{ $value->name }}
                                                     </td>
 
                                                     <td class="text-center">
@@ -212,16 +262,21 @@
                                                     <td class="text-center">
                                                         <div class="flex justify-center items-center flex-wrap gap-3">
                                                             <a class="flex items-center"
-                                                                href="{{ url('admin/mobile-models/' . $value->id . '/edit') }}">
+                                                                href="{{ url('admin/mobile-models/' . $value->id . '/edit') }}?scope={{ $pageScope }}">
                                                                 <i data-lucide="check-square"
                                                                     class="w-4 h-4 mr-1"></i>
+
                                                                 แก้ไข
                                                             </a>
 
                                                             <a href="javascript:void(0);"
                                                                 class="flex items-center text-danger"
-                                                                onclick="openDeleteModal({{ $value->id }}, '{{ addslashes($value->model_name) }}')">
+                                                                onclick='openDeleteModal(
+                                    {{ $value->id }},
+                                    @json($value->name)
+                                )'>
                                                                 <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i>
+
                                                                 ลบข้อมูล
                                                             </a>
                                                         </div>
@@ -230,7 +285,7 @@
                                             @empty
                                                 <tr>
                                                     <td colspan="6" class="text-center text-slate-500 py-5">
-                                                        ยังไม่มีข้อมูลโมเดลสินค้าในประเภทสินค้านี้
+                                                        ยังไม่มีข้อมูลโมเดลสินค้า
                                                     </td>
                                                 </tr>
                                             @endforelse
@@ -295,11 +350,30 @@
         jQuery(document).ready(function($) {
             $('#models-table').DataTable({
                 responsive: true,
+
+                /*
+                |--------------------------------------------------------------------------
+                | เรียงตาม sort_order จากน้อยไปมาก
+                |--------------------------------------------------------------------------
+                */
+
                 order: [
-                    [0, "asc"]
+                    [0, 'asc']
                 ],
+
+                columnDefs: [{
+                        targets: 0,
+                        type: 'num'
+                    },
+                    {
+                        targets: 5,
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+
                 language: {
-                    url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Thai.json"
+                    url: '//cdn.datatables.net/plug-ins/1.10.21/i18n/Thai.json'
                 }
             });
         });

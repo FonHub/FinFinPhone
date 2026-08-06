@@ -16,12 +16,15 @@ class MobileModel extends Model
         'mobile_product_category_id',
         'name',
         'status',
+        'sort_order',
     ];
 
     protected $casts = [
         'status' => 'boolean',
+        'sort_order' => 'integer',
     ];
 
+    
     public function brand()
     {
         return $this->belongsTo(MobileBrand::class, 'mobile_brand_id');

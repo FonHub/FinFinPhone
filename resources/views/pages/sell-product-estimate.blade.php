@@ -7,6 +7,7 @@
         .estimate-option-grid {
             display: grid;
             gap: 12px;
+            align-items: stretch;
         }
 
         .estimate-option-grid.has-icon {
@@ -17,34 +18,74 @@
             grid-template-columns: repeat(1, minmax(0, 1fr));
         }
 
-        .estimate-option-card-icon {
-            height: 118px;
-            min-height: 118px;
-            max-height: 118px;
+        /*
+                |--------------------------------------------------------------------------
+                | ทำให้ label และ card สูงเท่ากันทุกตัวในแถว
+                |--------------------------------------------------------------------------
+                */
+
+        .estimate-option-grid>label {
+            display: flex;
+            height: 100%;
         }
 
+        .estimate-option-card-icon {
+            width: 100%;
+            height: 100%;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /*
+                |--------------------------------------------------------------------------
+                | แสดงข้อความเต็ม ไม่ตัดคำ ไม่จำกัดจำนวนบรรทัด
+                |--------------------------------------------------------------------------
+                */
+
         .estimate-option-card-text {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            min-height: 40px;
-            max-height: 40px;
-            line-height: 20px;
+            display: block;
+            width: 100%;
+            min-height: 48px;
+            line-height: 22px;
+            white-space: normal;
+            overflow: visible;
             word-break: break-word;
+            overflow-wrap: anywhere;
+            text-align: center;
+        }
+
+        /*
+                |--------------------------------------------------------------------------
+                | ตัวเลือกที่ไม่มีไอคอน
+                |--------------------------------------------------------------------------
+                */
+
+        .estimate-option-card-no-icon {
+            width: 100%;
+            height: 100%;
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         @media (max-width: 640px) {
             .estimate-option-card-icon {
-                height: 112px;
-                min-height: 112px;
-                max-height: 112px;
+                min-height: 145px;
             }
 
             .estimate-option-card-text {
-                min-height: 36px;
-                max-height: 36px;
-                line-height: 18px;
+                min-height: 44px;
+                line-height: 20px;
+            }
+
+            .estimate-option-card-no-icon {
+                min-height: 72px;
             }
         }
 
@@ -189,73 +230,70 @@
     @endphp
 
     <section class="min-h-screen bg-[#F5F7F6]">
-        
+
 
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10" style="max-width: 1140px;">
             <div class="mb-8 lg:mb-12">
-    <div class="w-full px-4 sm:px-0">
-        <div class="flex items-start justify-center gap-2 sm:gap-4">
+                <div class="w-full px-4 sm:px-0">
+                    <div class="flex items-start justify-center gap-2 sm:gap-4">
 
-            {{-- Step 1 --}}
-            <div class="flex min-w-0 flex-1 flex-col items-center text-center">
-                <div
-                    class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#10A36A] text-white shadow-sm
+                        {{-- Step 1 --}}
+                        <div class="flex min-w-0 flex-1 flex-col items-center text-center">
+                            <div
+                                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#10A36A] text-white shadow-sm
                            sm:h-11 sm:w-11">
-                    <svg class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none">
-                        <path d="M20 7L10 17l-5-5"
-                            stroke="currentColor"
-                            stroke-width="2.4"
-                            stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                </div>
+                                <svg class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 24 24" fill="none">
+                                    <path d="M20 7L10 17l-5-5" stroke="currentColor" stroke-width="2.4"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
 
-                <span
-                    class="mt-2 block text-[11px] font-bold leading-tight text-[#13885C]
+                            <span
+                                class="mt-2 block text-[11px] font-bold leading-tight text-[#13885C]
                            sm:text-[15px] sm:leading-snug">
-                    ประเมินราคา
-                </span>
-            </div>
+                                ประเมินราคา
+                            </span>
+                        </div>
 
-            {{-- Line 1 --}}
-            <div class="mt-4 h-px w-8 shrink-0 bg-[#D7E3DD] sm:mt-5 sm:w-24"></div>
+                        {{-- Line 1 --}}
+                        <div class="mt-4 h-px w-8 shrink-0 bg-[#D7E3DD] sm:mt-5 sm:w-24"></div>
 
-            {{-- Step 2 --}}
-            <div class="flex min-w-0 flex-1 flex-col items-center text-center">
-                <div
-                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#10A36A] text-white text-base font-bold shadow-md
+                        {{-- Step 2 --}}
+                        <div class="flex min-w-0 flex-1 flex-col items-center text-center">
+                            <div
+                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#10A36A] text-white text-base font-bold shadow-md
                            sm:h-12 sm:w-12 sm:text-xl">
-                    2
-                </div>
+                                2
+                            </div>
 
-                <span
-                    class="mt-2 block text-[11px] font-bold leading-tight text-[#13885C]
+                            <span
+                                class="mt-2 block text-[11px] font-bold leading-tight text-[#13885C]
                            sm:text-[15px] sm:leading-snug">
-                    เลือกข้อมูลเครื่อง
-                </span>
-            </div>
+                                เลือกข้อมูลเครื่อง
+                            </span>
+                        </div>
 
-            {{-- Line 2 --}}
-            <div class="mt-4 h-px w-8 shrink-0 bg-[#D7E3DD] sm:mt-5 sm:w-24"></div>
+                        {{-- Line 2 --}}
+                        <div class="mt-4 h-px w-8 shrink-0 bg-[#D7E3DD] sm:mt-5 sm:w-24"></div>
 
-            {{-- Step 3 --}}
-            <div class="flex min-w-0 flex-1 flex-col items-center text-center opacity-45">
-                <div
-                    class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#C9D4CE] bg-white text-[#95A39B] text-sm font-bold
+                        {{-- Step 3 --}}
+                        <div class="flex min-w-0 flex-1 flex-col items-center text-center opacity-45">
+                            <div
+                                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#C9D4CE] bg-white text-[#95A39B] text-sm font-bold
                            sm:h-11 sm:w-11 sm:text-base">
-                    3
-                </div>
+                                3
+                            </div>
 
-                <span
-                    class="mt-2 block text-[11px] font-bold leading-tight text-[#95A39B]
+                            <span
+                                class="mt-2 block text-[11px] font-bold leading-tight text-[#95A39B]
                            sm:text-[15px] sm:leading-snug">
-                    ยืนยัน
-                </span>
-            </div>
+                                ยืนยัน
+                            </span>
+                        </div>
 
-        </div>
-    </div>
-</div>
+                    </div>
+                </div>
+            </div>
 
             <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 xl:gap-8 items-start">
                 <div class="xl:col-span-8">
@@ -443,8 +481,7 @@
 
                                                         @if ($hasIcon)
                                                             <span
-                                                                class="estimate-option-card-icon flex flex-col items-center justify-center gap-2 rounded-[14px] border border-[#DCE6E0] bg-[#FCFDFC] px-2 sm:px-3 py-3 sm:py-4 text-center text-[12px] sm:text-[14px] text-[#111827] transition duration-200 hover:border-[#10A36A] hover:bg-[#F7FCF9] peer-checked:border-[#10A36A] peer-checked:bg-[#ECF8F2] peer-checked:shadow-[inset_0_0_0_1px_#10A36A]">
-
+                                                                class="estimate-option-card-icon gap-3 rounded-[14px] border border-[#DCE6E0] bg-[#FCFDFC] px-3 py-4 text-center text-[12px] sm:text-[14px] text-[#111827] transition duration-200 hover:border-[#10A36A] hover:bg-[#F7FCF9] peer-checked:border-[#10A36A] peer-checked:bg-[#ECF8F2] peer-checked:shadow-[inset_0_0_0_1px_#10A36A]">
                                                                 <span
                                                                     class="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-[#F1F7F4] text-[#10A36A] flex items-center justify-center shrink-0 transition duration-200">
                                                                     {!! $issueIcons[$iconKey] !!}
@@ -456,7 +493,7 @@
                                                             </span>
                                                         @else
                                                             <span
-                                                                class="flex items-center min-h-[60px] rounded-[10px] border border-[#DCE6E0] bg-[#FCFDFC] px-4 py-3 text-[15px] text-[#111827] leading-6 transition duration-200 hover:border-[#10A36A] hover:bg-[#F7FCF9] peer-checked:border-[#10A36A] peer-checked:bg-[#ECF8F2] peer-checked:shadow-[inset_0_0_0_1px_#10A36A]">
+                                                                class="estimate-option-card-no-icon rounded-[10px] border border-[#DCE6E0] bg-[#FCFDFC] px-4 py-3 text-[15px] text-[#111827] leading-6 transition duration-200 hover:border-[#10A36A] hover:bg-[#F7FCF9] peer-checked:border-[#10A36A] peer-checked:bg-[#ECF8F2] peer-checked:shadow-[inset_0_0_0_1px_#10A36A]">
                                                                 {{ $field['label'] }}
                                                             </span>
                                                         @endif

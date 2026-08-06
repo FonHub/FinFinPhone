@@ -35,4 +35,12 @@ class MobileProductCategory extends Model
     {
         return $this->hasMany(ProductGradeQuestion::class, 'mobile_product_category_id');
     }
+    public function brand()
+    {
+        return $this->belongsTo(
+            MobileBrand::class,
+            'mobile_brand_id',
+            'id'
+        );
+    }
 }

@@ -9,18 +9,33 @@
 <body class="main">
     @include('admin/inc_mobilemenu')
 
+    @php
+        $sortOrder = old('sort_order', !empty($grade->sort_order) ? $grade->sort_order : $nextSortOrder ?? 1);
+    @endphp
+
     <div
         class="top-bar-boxed h-[70px] z-[51] relative border-b border-white/[0.08] -mt-7 md:-mt-5 -mx-3 sm:-mx-8 px-3 sm:px-8 md:pt-0 mb-12">
         <div class="h-full flex items-center">
             <a href="{{ url('admin/') }}" class="-intro-x hidden md:flex">
                 <img alt="Logo" class="w-6" src="{{ asset('dist/images/logo.svg') }}">
+
                 <span class="text-white text-lg ml-3"></span>
             </a>
 
             <nav aria-label="breadcrumb" class="-intro-x h-full mr-auto">
                 <ol class="breadcrumb breadcrumb-light">
-                    <li class="breadcrumb-item"><a href="{{ url('admin/') }}">สินค้า</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url('admin/grade-masters') }}">เกรดพื้นฐาน</a></li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ url('admin/') }}">
+                            สินค้า
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <a href="{{ url('admin/grade-masters') }}">
+                            เกรดพื้นฐาน
+                        </a>
+                    </li>
+
                     <li class="breadcrumb-item active" aria-current="page">
                         {{ $mode === 'edit' ? 'แก้ไขข้อมูล' : 'เพิ่มข้อมูล' }}
                     </li>
@@ -67,34 +82,54 @@
 
                         <div class="grid grid-cols-12 gap-4">
                             <div class="col-span-12 md:col-span-4">
-                                <label class="form-label">รหัสเกรด <span class="text-danger">*</span></label>
+                                <label class="form-label">
+                                    รหัสเกรด
+                                    <span class="text-danger">*</span>
+                                </label>
+
                                 <input type="text" name="grade_code" class="form-control"
                                     value="{{ old('grade_code', $grade->grade_code ?? '') }}"
-                                    placeholder="เช่น A หรือ FACEID">
+                                    placeholder="เช่น A หรือ FACEID" maxlength="50" required>
                             </div>
 
                             <div class="col-span-12 md:col-span-4">
-                                <label class="form-label">ชื่อเกรด <span class="text-danger">*</span></label>
+                                <label class="form-label">
+                                    ชื่อเกรด
+                                    <span class="text-danger">*</span>
+                                </label>
+
                                 <input type="text" name="grade_name" class="form-control"
-                                    value="{{ old('grade_name', $grade->grade_name ?? '') }}"
-                                    placeholder="เช่น เกรด A">
+                                    value="{{ old('grade_name', $grade->grade_name ?? '') }}" placeholder="เช่น เกรด A"
+                                    maxlength="100" required>
                             </div>
 
                             <div class="col-span-12 md:col-span-4">
-                                <label class="form-label">ลำดับการแสดง</label>
-                                <input type="number" name="sort_order" min="0" class="form-control"
-                                    value="{{ old('sort_order', $grade->sort_order ?? 0) }}" placeholder="เช่น 1">
+                                <label class="form-label">
+                                    ลำดับการแสดงผล
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input type="number" name="sort_order" min="1" step="1"
+                                    class="form-control" value="{{ $sortOrder }}" placeholder="เช่น 1" required>
+
+                                <div class="text-slate-500 text-xs mt-1">
+                                    หากใส่ลำดับซ้ำ รายการเดิมจะถูกขยับลงอัตโนมัติ
+                                </div>
                             </div>
 
                             <div class="col-span-12 md:col-span-4">
-                                <label class="form-label">สถานะ</label>
+                                <label class="form-label">
+                                    สถานะ
+                                </label>
+
                                 <select name="status" class="form-select">
                                     <option value="1"
-                                        {{ old('status', isset($grade->status) ? (int) $grade->status : 1) == 1 ? 'selected' : '' }}>
+                                        {{ (string) old('status', isset($grade->status) ? (int) $grade->status : 1) === '1' ? 'selected' : '' }}>
                                         เปิดใช้งาน
                                     </option>
+
                                     <option value="0"
-                                        {{ old('status', isset($grade->status) ? (int) $grade->status : 1) == 0 ? 'selected' : '' }}>
+                                        {{ (string) old('status', isset($grade->status) ? (int) $grade->status : 1) === '0' ? 'selected' : '' }}>
                                         ปิดใช้งาน
                                     </option>
                                 </select>

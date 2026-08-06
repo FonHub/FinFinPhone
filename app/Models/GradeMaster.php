@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GradeMaster extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'grade_masters';
 
@@ -22,15 +23,22 @@ class GradeMaster extends Model
     protected $casts = [
         'sort_order' => 'integer',
         'status' => 'boolean',
+        'deleted_at' => 'datetime',
     ];
 
     public function questionOptions(): HasMany
     {
-        return $this->hasMany(ProductGradeQuestionOption::class, 'grade_master_id');
+        return $this->hasMany(
+            ProductGradeQuestionOption::class,
+            'grade_master_id'
+        );
     }
 
     public function modelPriceGrades(): HasMany
     {
-        return $this->hasMany(MobileModelPriceGrade::class, 'grade_master_id');
+        return $this->hasMany(
+            MobileModelPriceGrade::class,
+            'grade_master_id'
+        );
     }
 }
