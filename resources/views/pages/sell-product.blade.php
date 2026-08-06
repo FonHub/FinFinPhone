@@ -196,7 +196,7 @@
     </script>
 
     {{-- CATEGORY + ESTIMATE --}}
-    <section id="sell-estimate-section" class="w-full max-w-[1140px] mx-auto px-4 sm:px-6" style="max-width: 1140px;">
+     <section id="sell-estimate-section" class="w-full max-w-[1140px] mx-auto px-4 sm:px-6" style="max-width: 1140px;">
         <div class="bg-white rounded-3xl shadow-lg p-6 sm:p-8 md:p-10 -mt-16 sm:-mt-20 md:-mt-[10rem] relative z-10">
 
             <h2
@@ -527,11 +527,34 @@
 
                         return String(model.mobile_brand_id) === String(brandId);
                     })
+                    .sort(function(a, b) {
+                        const sortA = Number(a.sort_order || 0);
+                        const sortB = Number(b.sort_order || 0);
+
+                        if (sortA !== sortB) {
+                            return sortA - sortB;
+                        }
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | ถ้า sort_order เท่ากัน ให้เรียงตามชื่อรุ่น
+                        |--------------------------------------------------------------------------
+                        */
+
+                        return String(a.name || '').localeCompare(
+                            String(b.name || ''),
+                            'th', {
+                                numeric: true,
+                                sensitivity: 'base'
+                            }
+                        );
+                    })
                     .forEach(function(model) {
                         const option = document.createElement('option');
 
                         option.value = model.id;
                         option.textContent = model.name;
+                        option.dataset.sortOrder = model.sort_order || 0;
 
                         modelSelect.appendChild(option);
                     });
@@ -908,13 +931,14 @@
 
 
     {{-- REVIEWS --}}
-    <section class="py-20 bg-gray-50">
-        <h2 class="font-medium mb-6 text-[26px] md:text-[26px] lg:text-[38px] text-[#285F43] text-center">
-            รีวิวความประทับใจ
-        </h2>
+    @if (!empty($reviews) && $reviews->count() > 0)
+        <section class="py-10 bg-gray-50">
+            <h2 class="font-medium mb-6 text-[26px] md:text-[26px] lg:text-[38px] text-[#285F43] text-center">
+                รีวิวความประทับใจ
+            </h2>
 
-        @if (!empty($reviews) && $reviews->count() > 0)
             <div class="relative container mx-auto px-6" style="max-width: 1140px;">
+                {{-- Left arrow --}}
                 <button type="button"
                     class="review-nav review-prev hidden md:flex items-center justify-center absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow border border-gray-200 z-10"
                     aria-label="Previous">
@@ -924,6 +948,7 @@
                     </svg>
                 </button>
 
+                {{-- Right arrow --}}
                 <button type="button"
                     class="review-nav review-next hidden md:flex items-center justify-center absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow border border-gray-200 z-10"
                     aria-label="Next">
@@ -948,13 +973,15 @@
                                     : 'ขอบคุณที่ใช้บริการ Cashkub';
 
                                 $reviewRating = max(1, min(5, (int) ($review->rating ?? 5)));
+
+                                $reviewRateText = number_format($reviewRating, 1);
                             @endphp
 
                             <div class="review-slide basis-1/2 md:basis-1/2 lg:basis-[20%] shrink-0 px-2">
-                                <div class="bg-white shadow-sm rounded-2xl h-full overflow-hidden border border-gray-100">
+                                <div class="bg-white shadow-sm rounded-none h-full">
                                     <div class="px-4 pt-4">
                                         <div
-                                            class="review-image-wrap w-full overflow-hidden rounded-2xl aspect-[4/3] md:aspect-[4/5] lg:aspect-[4/5] bg-[#F5F7F6]">
+                                            class="review-image-wrap w-full overflow-hidden rounded-t-2xl aspect-[4/3] md:aspect-[4/5] lg:aspect-[4/5] bg-[#F5F7F6]">
                                             <img src="{{ $reviewImage }}" alt="Review {{ $idx + 1 }}"
                                                 class="w-full h-full object-cover">
                                         </div>
@@ -974,7 +1001,7 @@
                                             </div>
 
                                             <div class="text-xl font-semibold text-gray-900">
-                                                {{ number_format($reviewRating, 1) }}
+                                                {{ $reviewRateText }}
                                             </div>
                                         </div>
 
@@ -982,11 +1009,11 @@
                                             {{ $reviewTitle }}
                                         </div>
 
-                                        <div class="mt-2 text-sm text-gray-600 leading-6 line-clamp-3">
+                                        <div class="text-gray-900 font-semibold leading-tight mb-2 line-clamp-2">
                                             {{ $reviewComment }}
                                         </div>
 
-                                        <div class="mt-3 text-sm text-gray-500">
+                                        <div class="text-sm text-gray-500">
                                             By {{ $review->display_phone ?? 'สมาชิก Cashkub' }}
                                         </div>
 
@@ -1011,33 +1038,47 @@
                     const next = document.querySelector('.review-next');
                     const dotsWrap = document.getElementById('review-dots');
 
-                    if (!viewport || !track || !dotsWrap) return;
+                    if (!viewport || !track || !dotsWrap) {
+                        return;
+                    }
 
-                    const slides = Array.from(track.querySelectorAll('.review-slide'));
+                    const slides = Array.from(
+                        track.querySelectorAll('.review-slide')
+                    );
+
                     let index = 0;
                     let perPage = 5;
 
                     const AUTO_PLAY = true;
                     const AUTO_INTERVAL_MS = 3500;
+
                     let timer = null;
                     let isHovering = false;
 
                     function calcPerPage() {
-                        const w = window.innerWidth;
+                        const width = window.innerWidth;
 
-                        if (w >= 1024) return 5;
-                        if (w >= 768) return 2;
+                        if (width >= 1024) {
+                            return 5;
+                        }
 
                         return 2;
                     }
 
                     function pagesCount() {
-                        return Math.max(1, Math.ceil(slides.length / perPage));
+                        return Math.max(
+                            1,
+                            Math.ceil(slides.length / perPage)
+                        );
                     }
 
-                    function clampIndex(i) {
+                    function clampIndex(value) {
                         const max = pagesCount() - 1;
-                        return Math.min(Math.max(i, 0), max);
+
+                        return Math.min(
+                            Math.max(value, 0),
+                            max
+                        );
                     }
 
                     function slideWidth() {
@@ -1046,6 +1087,7 @@
 
                     function renderDots() {
                         dotsWrap.innerHTML = '';
+
                         const total = pagesCount();
 
                         if (total <= 1) {
@@ -1054,110 +1096,173 @@
 
                         for (let i = 0; i < total; i++) {
                             const dot = document.createElement('button');
+
                             dot.type = 'button';
-                            dot.className = 'w-2 h-2 rounded-full ' + (i === index ? 'bg-gray-900' : 'bg-gray-300');
-                            dot.setAttribute('aria-label', 'Go to page ' + (i + 1));
-                            dot.addEventListener('click', () => {
+                            dot.className =
+                                'w-2 h-2 rounded-full ' +
+                                (
+                                    i === index ?
+                                    'bg-gray-900' :
+                                    'bg-gray-300'
+                                );
+
+                            dot.setAttribute(
+                                'aria-label',
+                                'Go to page ' + (i + 1)
+                            );
+
+                            dot.addEventListener('click', function() {
                                 go(i);
                                 resetAutoplay();
                             });
+
                             dotsWrap.appendChild(dot);
                         }
                     }
 
                     function updateNav() {
                         const total = pagesCount();
-                        const showNav = window.innerWidth >= 768 && total > 1;
+                        const showNav =
+                            window.innerWidth >= 768 &&
+                            total > 1;
 
-                        if (prev) prev.classList.toggle('hidden', !showNav);
-                        if (next) next.classList.toggle('hidden', !showNav);
+                        if (prev) {
+                            prev.classList.toggle(
+                                'hidden',
+                                !showNav
+                            );
 
-                        if (prev) prev.disabled = (index === 0);
-                        if (next) next.disabled = (index >= total - 1);
+                            prev.disabled = index === 0;
+                            prev.style.opacity =
+                                prev.disabled ? '0.35' : '1';
+                        }
 
-                        if (prev) prev.style.opacity = prev.disabled ? '0.35' : '1';
-                        if (next) next.style.opacity = next.disabled ? '0.35' : '1';
+                        if (next) {
+                            next.classList.toggle(
+                                'hidden',
+                                !showNav
+                            );
+
+                            next.disabled =
+                                index >= total - 1;
+
+                            next.style.opacity =
+                                next.disabled ? '0.35' : '1';
+                        }
                     }
 
                     function updateDotsActive() {
-                        Array.from(dotsWrap.children).forEach((d, di) => {
-                            d.className = 'w-2 h-2 rounded-full ' + (di === index ? 'bg-gray-900' : 'bg-gray-300');
+                        Array.from(
+                            dotsWrap.children
+                        ).forEach(function(dot, dotIndex) {
+                            dot.className =
+                                'w-2 h-2 rounded-full ' +
+                                (
+                                    dotIndex === index ?
+                                    'bg-gray-900' :
+                                    'bg-gray-300'
+                                );
                         });
                     }
 
-                    function go(i) {
-                        index = clampIndex(i);
-                        const x = index * slideWidth();
-                        track.style.transform = `translateX(${-x}px)`;
+                    function go(value) {
+                        index = clampIndex(value);
+
+                        const x =
+                            index * slideWidth();
+
+                        track.style.transform =
+                            'translateX(' + (-x) + 'px)';
+
                         updateDotsActive();
                         updateNav();
                     }
 
                     function nextPage() {
                         const total = pagesCount();
-                        const nextIdx = (index + 1) >= total ? 0 : (index + 1);
-                        go(nextIdx);
+
+                        const nextIndex =
+                            index + 1 >= total ?
+                            0 :
+                            index + 1;
+
+                        go(nextIndex);
                     }
 
                     function startAutoplay() {
-                        if (!AUTO_PLAY || pagesCount() <= 1) return;
+                        if (
+                            !AUTO_PLAY ||
+                            pagesCount() <= 1
+                        ) {
+                            return;
+                        }
+
                         stopAutoplay();
 
-                        timer = setInterval(() => {
-                            if (isHovering) return;
+                        timer = setInterval(function() {
+                            if (isHovering) {
+                                return;
+                            }
+
                             nextPage();
                         }, AUTO_INTERVAL_MS);
                     }
 
                     function stopAutoplay() {
-                        if (timer) {
-                            clearInterval(timer);
-                            timer = null;
+                        if (!timer) {
+                            return;
                         }
+
+                        clearInterval(timer);
+                        timer = null;
                     }
 
                     function resetAutoplay() {
-                        if (!AUTO_PLAY) return;
+                        if (!AUTO_PLAY) {
+                            return;
+                        }
+
                         startAutoplay();
                     }
 
                     function refresh() {
                         perPage = calcPerPage();
                         index = clampIndex(index);
+
                         renderDots();
                         go(index);
                         resetAutoplay();
                     }
 
                     if (prev) {
-                        prev.addEventListener('click', () => {
+                        prev.addEventListener('click', function() {
                             go(index - 1);
                             resetAutoplay();
                         });
                     }
 
                     if (next) {
-                        next.addEventListener('click', () => {
+                        next.addEventListener('click', function() {
                             go(index + 1);
                             resetAutoplay();
                         });
                     }
 
-                    viewport.addEventListener('mouseenter', () => {
+                    viewport.addEventListener('mouseenter', function() {
                         isHovering = true;
                     });
 
-                    viewport.addEventListener('mouseleave', () => {
+                    viewport.addEventListener('mouseleave', function() {
                         isHovering = false;
                     });
 
-                    viewport.addEventListener('touchstart', () => {
+                    viewport.addEventListener('touchstart', function() {
                         isHovering = true;
                     }, {
                         passive: true
                     });
 
-                    viewport.addEventListener('touchend', () => {
+                    viewport.addEventListener('touchend', function() {
                         isHovering = false;
                     }, {
                         passive: true
@@ -1169,18 +1274,7 @@
                     startAutoplay();
                 })();
             </script>
-        @else
-            <div class="container mx-auto px-6" style="max-width: 1140px;">
-                <div class="rounded-3xl bg-white border border-gray-100 shadow-sm px-6 py-12 text-center">
-                    <div class="text-[#285F43] text-[22px] font-semibold">
-                        ยังไม่มีรีวิวความประทับใจ
-                    </div>
-                    <p class="mt-3 text-gray-500 text-[15px]">
-                        เมื่อมีลูกค้ารีวิวหลังขายสินค้า รายการจะแสดงที่นี่
-                    </p>
-                </div>
-            </div>
-        @endif
-    </section>
+        </section>
+    @endif
 
 @endsection

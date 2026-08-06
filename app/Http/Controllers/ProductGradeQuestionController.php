@@ -30,6 +30,8 @@ class ProductGradeQuestionController extends Controller
         'mic',
         'charge',
         'sim',
+        'bent',
+        's_pen',
         'other',
     ];
 

@@ -37,16 +37,20 @@ class PageController extends Controller
         $categories = MobileProductCategory::query()
             ->with([
                 'selectedIcon',
+
                 'mobileModels' => function ($query) {
                     $query->with([
                         'brand',
+
                         'prices' => function ($priceQuery) {
-                            $priceQuery->where('status', 1)
+                            $priceQuery
+                                ->where('status', 1)
                                 ->orderBy('id', 'asc');
                         },
                     ])
                         ->where('status', 1)
-                        ->orderBy('name', 'asc');
+                        ->orderBy('sort_order', 'asc')
+                        ->orderBy('id', 'asc');
                 },
             ])
             ->where('status', 1)
@@ -62,29 +66,58 @@ class PageController extends Controller
                     'name' => $category->category_name,
                     'label_th' => $category->category_name,
 
-                    'icon_default' => $category->selectedIcon->icon_default ?? 'assets/media/icons/checked.gif',
-                    'icon_active' => $category->selectedIcon->icon_active ?? 'assets/media/icons/checked-01.gif',
+                    'icon_default' =>
+                    $category->selectedIcon->icon_default
+                        ?? 'assets/media/icons/checked.gif',
 
-                    'models' => $category->mobileModels->map(function ($model) {
-                        return [
-                            'id' => $model->id,
-                            'name' => $model->name,
+                    'icon_active' =>
+                    $category->selectedIcon->icon_active
+                        ?? 'assets/media/icons/checked-01.gif',
 
-                            'mobile_brand_id' => $model->mobile_brand_id,
-                            'brand_name' => $model->brand->name ?? '-',
+                    'models' => $category->mobileModels
+                        ->sortBy(function ($model) {
+                            return [
+                                (int) ($model->sort_order ?? 0),
+                                (int) $model->id,
+                            ];
+                        })
+                        ->values()
+                        ->map(function ($model) {
+                            return [
+                                'id' => $model->id,
+                                'name' => $model->name,
 
-                            'mobile_product_category_id' => $model->mobile_product_category_id,
+                                'sort_order' =>
+                                (int) ($model->sort_order ?? 0),
 
-                            'capacities' => $model->prices->map(function ($price) {
-                                return [
-                                    'id' => $price->id,
-                                    'capacity' => $price->capacity,
-                                    'base_price' => $price->base_price,
-                                    'min_price' => $price->min_price,
-                                ];
-                            })->values()->toArray(),
-                        ];
-                    })->values()->toArray(),
+                                'mobile_brand_id' =>
+                                $model->mobile_brand_id,
+
+                                'brand_name' =>
+                                $model->brand->name ?? '-',
+
+                                'mobile_product_category_id' =>
+                                $model->mobile_product_category_id,
+
+                                'capacities' => $model->prices
+                                    ->sortBy(function ($price) {
+                                        return $this->getCapacitySortValue(
+                                            (string) $price->capacity
+                                        );
+                                    })
+                                    ->values()
+                                    ->map(function ($price) {
+                                        return [
+                                            'id' => $price->id,
+                                            'capacity' => $price->capacity,
+                                            'base_price' => $price->base_price,
+                                            'min_price' => $price->min_price,
+                                        ];
+                                    })
+                                    ->toArray(),
+                            ];
+                        })
+                        ->toArray(),
                 ];
             })
             ->values()
@@ -228,16 +261,20 @@ class PageController extends Controller
         $categories = MobileProductCategory::query()
             ->with([
                 'selectedIcon',
+
                 'mobileModels' => function ($query) {
                     $query->with([
                         'brand',
+
                         'prices' => function ($priceQuery) {
-                            $priceQuery->where('status', 1)
+                            $priceQuery
+                                ->where('status', 1)
                                 ->orderBy('id', 'asc');
                         },
                     ])
                         ->where('status', 1)
-                        ->orderBy('name', 'asc');
+                        ->orderBy('sort_order', 'asc')
+                        ->orderBy('id', 'asc');
                 },
             ])
             ->where('status', 1)
@@ -253,29 +290,58 @@ class PageController extends Controller
                     'name' => $category->category_name,
                     'label_th' => $category->category_name,
 
-                    'icon_default' => $category->selectedIcon->icon_default ?? 'assets/media/icons/checked.gif',
-                    'icon_active' => $category->selectedIcon->icon_active ?? 'assets/media/icons/checked-01.gif',
+                    'icon_default' =>
+                    $category->selectedIcon->icon_default
+                        ?? 'assets/media/icons/checked.gif',
 
-                    'models' => $category->mobileModels->map(function ($model) {
-                        return [
-                            'id' => $model->id,
-                            'name' => $model->name,
+                    'icon_active' =>
+                    $category->selectedIcon->icon_active
+                        ?? 'assets/media/icons/checked-01.gif',
 
-                            'mobile_brand_id' => $model->mobile_brand_id,
-                            'brand_name' => $model->brand->name ?? '-',
+                    'models' => $category->mobileModels
+                        ->sortBy(function ($model) {
+                            return [
+                                (int) ($model->sort_order ?? 0),
+                                (int) $model->id,
+                            ];
+                        })
+                        ->values()
+                        ->map(function ($model) {
+                            return [
+                                'id' => $model->id,
+                                'name' => $model->name,
 
-                            'mobile_product_category_id' => $model->mobile_product_category_id,
+                                'sort_order' =>
+                                (int) ($model->sort_order ?? 0),
 
-                            'capacities' => $model->prices->map(function ($price) {
-                                return [
-                                    'id' => $price->id,
-                                    'capacity' => $price->capacity,
-                                    'base_price' => $price->base_price,
-                                    'min_price' => $price->min_price,
-                                ];
-                            })->values()->toArray(),
-                        ];
-                    })->values()->toArray(),
+                                'mobile_brand_id' =>
+                                $model->mobile_brand_id,
+
+                                'brand_name' =>
+                                $model->brand->name ?? '-',
+
+                                'mobile_product_category_id' =>
+                                $model->mobile_product_category_id,
+
+                                'capacities' => $model->prices
+                                    ->sortBy(function ($price) {
+                                        return $this->getCapacitySortValue(
+                                            (string) $price->capacity
+                                        );
+                                    })
+                                    ->values()
+                                    ->map(function ($price) {
+                                        return [
+                                            'id' => $price->id,
+                                            'capacity' => $price->capacity,
+                                            'base_price' => $price->base_price,
+                                            'min_price' => $price->min_price,
+                                        ];
+                                    })
+                                    ->toArray(),
+                            ];
+                        })
+                        ->toArray(),
                 ];
             })
             ->values()
@@ -2777,5 +2843,39 @@ class PageController extends Controller
                 ->withInput()
                 ->with('error', 'ไม่สามารถส่งรีวิวได้: ' . $e->getMessage());
         }
+    }
+
+    private function getCapacitySortValue(string $capacity): int
+    {
+        $capacity = strtoupper(trim($capacity));
+
+        if ($capacity === '') {
+            return PHP_INT_MAX;
+        }
+
+        preg_match(
+            '/([\d,.]+)\s*(TB|GB|MB)?/i',
+            $capacity,
+            $matches
+        );
+
+        if (empty($matches[1])) {
+            return PHP_INT_MAX;
+        }
+
+        $number = (float) str_replace(
+            ',',
+            '',
+            $matches[1]
+        );
+
+        $unit = strtoupper($matches[2] ?? 'GB');
+
+        return match ($unit) {
+            'TB' => (int) round($number * 1024 * 1024),
+            'GB' => (int) round($number * 1024),
+            'MB' => (int) round($number),
+            default => (int) round($number * 1024),
+        };
     }
 }

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', config('app.name', 'Cashkub'))</title>
     <link rel="icon" type="image/png"
-        href="{{ asset('assets/media/logo/Cashkub.ai') }}">
+        href="{{ asset('assets/media/logo/logo.png') }}">
 
     {{-- โหลดทั้ง CSS + JS --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])

@@ -69,126 +69,57 @@
 
                         @php
                             $issueIcons = [
-                                'none' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <circle cx="12" cy="12" r="8.5" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8.5 12.2l2.2 2.2 4.9-5.2" />
-</svg>
-',
+                                'none' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><circle cx="12" cy="12" r="8.5" stroke-width="1.8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8.5 12.2l2.2 2.2 4.9-5.2"/></svg>',
 
-                                'touch' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <rect x="6.5" y="3.5" width="11" height="17" rx="2.5" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 17.5h.01" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.5 9.5c.7-.7 1.5-1 2.5-1s1.8.3 2.5 1M8.2 7.2A5.8 5.8 0 0 1 12 5.8a5.8 5.8 0 0 1 3.8 1.4" />
-</svg>
-',
+                                'touch' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><rect x="6.5" y="3.5" width="11" height="17" rx="2.5" stroke-width="1.8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 17.5h.01M9.5 9.5c.7-.7 1.5-1 2.5-1s1.8.3 2.5 1M8.2 7.2A5.8 5.8 0 0 1 12 5.8a5.8 5.8 0 0 1 3.8 1.4"/></svg>',
 
-                                'connect' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.8 8.5A15 15 0 0 1 12 5.5a15 15 0 0 1 9.2 3" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 12a9.5 9.5 0 0 1 12 0" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.2 15.2a5 5 0 0 1 5.6 0" />
-    <circle cx="12" cy="18.2" r="1.1" fill="currentColor" stroke="none" />
-</svg>
-',
+                                'connect' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.8 8.5A15 15 0 0 1 12 5.5a15 15 0 0 1 9.2 3M6 12a9.5 9.5 0 0 1 12 0M9.2 15.2a5 5 0 0 1 5.6 0"/><circle cx="12" cy="18.2" r="1.1" fill="currentColor" stroke="none"/></svg>',
 
-                                'vibration' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <rect x="8" y="4" width="8" height="16" rx="2.2" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.5 8.5v7M19.5 8.5v7M2.5 10.5v3M21.5 10.5v3" />
-</svg>
-',
+                                'vibration' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><rect x="8" y="4" width="8" height="16" rx="2.2" stroke-width="1.8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.5 8.5v7M19.5 8.5v7M2.5 10.5v3M21.5 10.5v3"/></svg>',
 
-                                'call' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7.2 5.2l2 3.8c.3.6.2 1.2-.3 1.6l-1.1 1c1.1 2.2 2.8 3.9 5 5l1-1.1c.4-.5 1.1-.6 1.6-.3l3.8 2c.6.3.9 1 .7 1.7-.4 1.3-1.6 2.1-3 2.1C9.2 21 3 14.8 3 7.1c0-1.4.8-2.6 2.1-3 .7-.2 1.4.1 1.7 1.1z" />
-</svg>
-',
+                                'call' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7.2 5.2l2 3.8c.3.6.2 1.2-.3 1.6l-1.1 1c1.1 2.2 2.8 3.9 5 5l1-1.1c.4-.5 1.1-.6 1.6-.3l3.8 2c.6.3.9 1 .7 1.7-.4 1.3-1.6 2.1-3 2.1C9.2 21 3 14.8 3 7.1c0-1.4.8-2.6 2.1-3 .7-.2 1.4.1 1.7 1.1z"/></svg>',
 
-                                'face_scan' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 4.5H6.8A2.3 2.3 0 0 0 4.5 6.8V8M16 4.5h1.2a2.3 2.3 0 0 1 2.3 2.3V8M19.5 16v1.2a2.3 2.3 0 0 1-2.3 2.3H16M8 19.5H6.8a2.3 2.3 0 0 1-2.3-2.3V16" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.5 10.3c.5-.6 1.3-1 2.5-1s2 .4 2.5 1M9.3 14.2c.7.8 1.6 1.3 2.7 1.3s2-.5 2.7-1.3" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h.01M15 12h.01" />
-</svg>
-',
+                                'face_scan' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 4.5H6.8A2.3 2.3 0 0 0 4.5 6.8V8M16 4.5h1.2a2.3 2.3 0 0 1 2.3 2.3V8M19.5 16v1.2a2.3 2.3 0 0 1-2.3 2.3H16M8 19.5H6.8a2.3 2.3 0 0 1-2.3-2.3V16M9.5 10.3c.5-.6 1.3-1 2.5-1s2 .4 2.5 1M9.3 14.2c.7.8 1.6 1.3 2.7 1.3s2-.5 2.7-1.3M9 12h.01M15 12h.01"/></svg>',
 
-                                'home' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <rect x="7" y="3.5" width="10" height="17" rx="2.5" stroke-width="1.8" />
-    <circle cx="12" cy="16.8" r="1.4" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6.8h4" />
-</svg>
-',
+                                'home' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><rect x="7" y="3.5" width="10" height="17" rx="2.5" stroke-width="1.8"/><circle cx="12" cy="16.8" r="1.4" stroke-width="1.8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6.8h4"/></svg>',
 
-                                'display' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <rect x="4" y="5" width="16" height="11" rx="2" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 20h6M12 16v4" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7.5 9.5h.01M10.5 9.5h.01M13.5 9.5h.01M16.5 9.5h.01" />
-</svg>
-',
+                                'display' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><rect x="4" y="5" width="16" height="11" rx="2" stroke-width="1.8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 20h6M12 16v4M7.5 9.5h.01M10.5 9.5h.01M13.5 9.5h.01M16.5 9.5h.01"/></svg>',
 
-                                'camera' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <rect x="3.5" y="6.5" width="17" height="12" rx="2.5" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 6.5l1.2-2h5.6l1.2 2" />
-    <circle cx="12" cy="12.5" r="3.2" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M18 9h.01" />
-</svg>
-',
+                                'camera' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><rect x="3.5" y="6.5" width="17" height="12" rx="2.5" stroke-width="1.8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 6.5l1.2-2h5.6l1.2 2M18 9h.01"/><circle cx="12" cy="12.5" r="3.2" stroke-width="1.8"/></svg>',
 
-                                'sensor' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <circle cx="12" cy="12" r="2.5" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4v2.2M12 17.8V20M4 12h2.2M17.8 12H20M6.4 6.4l1.5 1.5M16.1 16.1l1.5 1.5M17.6 6.4l-1.5 1.5M7.9 16.1l-1.5 1.5" />
-</svg>
-',
+                                'sensor' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><circle cx="12" cy="12" r="2.5" stroke-width="1.8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4v2.2M12 17.8V20M4 12h2.2M17.8 12H20M6.4 6.4l1.5 1.5M16.1 16.1l1.5 1.5M17.6 6.4l-1.5 1.5M7.9 16.1l-1.5 1.5"/></svg>',
 
-                                'button' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <rect x="7" y="3.5" width="10" height="17" rx="2.5" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.8 8.5h1.2M17.8 11.5h1.2M5 10h1.2" />
-</svg>
-',
+                                'button' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><rect x="7" y="3.5" width="10" height="17" rx="2.5" stroke-width="1.8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.8 8.5h1.2M17.8 11.5h1.2M5 10h1.2"/></svg>',
 
-                                'speaker' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 14.5h3.2l4.3 3V6.5l-4.3 3H5z" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.5 10a3 3 0 0 1 0 4" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.8 8a6 6 0 0 1 0 8" />
-</svg>
-',
+                                'speaker' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 14.5h3.2l4.3 3V6.5l-4.3 3H5zM15.5 10a3 3 0 0 1 0 4M17.8 8a6 6 0 0 1 0 8"/></svg>',
 
-                                'mic' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <rect x="9" y="4" width="6" height="10" rx="3" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6.5 11.5a5.5 5.5 0 0 0 11 0M12 17v3M9 20h6" />
-</svg>
-',
+                                'mic' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><rect x="9" y="4" width="6" height="10" rx="3" stroke-width="1.8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6.5 11.5a5.5 5.5 0 0 0 11 0M12 17v3M9 20h6"/></svg>',
 
-                                'charge' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 7V4M15 7V4" />
-    <rect x="7" y="7" width="10" height="7" rx="1.8" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 18h4M12 14v4" />
-</svg>
-',
+                                'charge' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 7V4M15 7V4M10 18h4M12 14v4"/><rect x="7" y="7" width="10" height="7" rx="1.8" stroke-width="1.8"/></svg>',
 
-                                'sim' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 4.5h6l3 3v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2z" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.5 10.5h5M9.5 14h5" />
-</svg>
-',
+                                'sim' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 4.5h6l3 3v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2zM9.5 10.5h5M9.5 14h5"/></svg>',
 
-                                'other' => '
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
-    <circle cx="12" cy="12" r="8" stroke-width="1.8" />
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8.2a2.4 2.4 0 0 1 2.4 2.2c0 1.5-1.8 2-2.4 3.1M12 16.8h.01" />
-</svg>
-',
+                                'bent' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.5 5.5h6.2v13H4.5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2zM19.5 5.5h-6.2v13h6.2a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zM10.7 5.5l2.6 13M13.3 5.5l-2.6 13M8.2 9.5l2.5 2.5-2.5 2.5M15.8 9.5L13.3 12l2.5 2.5"/></svg>',
+                                's_pen' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.8 4.2l4 4-10.6 10.6-5 1 1-5L15.8 4.2zM13.8 6.2l4 4M4.2 19.8l3.1-3.1"/></svg>',
+
+                                'other' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><circle cx="12" cy="12" r="8" stroke-width="1.8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8.2a2.4 2.4 0 0 1 2.4 2.2c0 1.5-1.8 2-2.4 3.1M12 16.8h.01"/></svg>',
                             ];
 
                             $issueIconLabels = [
@@ -208,6 +139,8 @@
                                 'mic' => 'ไมโครโฟน',
                                 'charge' => 'ชาร์จ',
                                 'sim' => 'ซิม',
+                                'bent' => 'เครื่องงอ',
+                                's_pen' => 'S Pen ใช้งานไม่ได้',
                                 'other' => 'อื่น ๆ',
                             ];
                         @endphp
