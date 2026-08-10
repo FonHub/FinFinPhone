@@ -96,6 +96,9 @@ class PageController extends Controller
                                 'brand_name' =>
                                 $model->brand->name ?? '-',
 
+                                'brand_sort_order' =>
+                                (int) ($model->brand->sort_order ?? 0),
+
                                 'mobile_product_category_id' =>
                                 $model->mobile_product_category_id,
 
@@ -143,13 +146,26 @@ class PageController extends Controller
             ->get()
             ->map(function ($bonusCode) {
                 if ($bonusCode->bonus_type === BonusCode::TYPE_PERCENT) {
-                    $bonusText = number_format((float) $bonusCode->bonus_value, 0) . '%';
+                    $bonusText = number_format(
+                        (float) $bonusCode->bonus_value,
+                        0
+                    ) . '%';
 
                     if ($bonusCode->max_bonus_amount !== null) {
-                        $bonusText .= ' สูงสุด ' . number_format((float) $bonusCode->max_bonus_amount, 0) . '฿';
+                        $bonusText .= ' สูงสุด '
+                            . number_format(
+                                (float) $bonusCode->max_bonus_amount,
+                                0
+                            )
+                            . '฿';
                     }
                 } else {
-                    $bonusText = '+' . number_format((float) $bonusCode->bonus_value, 0) . '฿';
+                    $bonusText = '+'
+                        . number_format(
+                            (float) $bonusCode->bonus_value,
+                            0
+                        )
+                        . '฿';
                 }
 
                 return [
@@ -165,14 +181,13 @@ class PageController extends Controller
             ->values()
             ->toArray();
 
-
-
         $saleDetailSection = SaleDetailSection::with([
             'tabs' => function ($query) {
                 $query->where('status', 'active')
                     ->orderBy('sort_order', 'asc')
                     ->orderBy('id', 'asc');
             },
+
             'tabs.steps' => function ($query) {
                 $query->where('status', 'active')
                     ->orderBy('sort_order', 'asc')
@@ -183,13 +198,13 @@ class PageController extends Controller
             ->where('status', 'active')
             ->first();
 
-        /*
-    |--------------------------------------------------------------------------
-    | รีวิวจากตาราง sell_order_reviews
-    |--------------------------------------------------------------------------
-    */
         $reviews = DB::table('sell_order_reviews')
-            ->leftJoin('sell_orders', 'sell_order_reviews.sell_order_id', '=', 'sell_orders.id')
+            ->leftJoin(
+                'sell_orders',
+                'sell_order_reviews.sell_order_id',
+                '=',
+                'sell_orders.id'
+            )
             ->select([
                 'sell_order_reviews.id',
                 'sell_order_reviews.sell_order_id',
@@ -224,22 +239,44 @@ class PageController extends Controller
                     );
                 }
 
-                $phone = preg_replace('/\D+/', '', (string) ($review->customer_phone ?? ''));
+                $phone = preg_replace(
+                    '/\D+/',
+                    '',
+                    (string) ($review->customer_phone ?? '')
+                );
 
                 if (strlen($phone) >= 7) {
-                    $maskedPhone = substr($phone, 0, 3) . 'xxx' . substr($phone, -3);
+                    $maskedPhone =
+                        substr($phone, 0, 3)
+                        . 'xxx'
+                        . substr($phone, -3);
                 } elseif (!empty($phone)) {
-                    $maskedPhone = substr($phone, 0, 2) . 'xxx';
+                    $maskedPhone =
+                        substr($phone, 0, 2)
+                        . 'xxx';
                 } else {
                     $maskedPhone = 'สมาชิก Cashkub';
                 }
 
-                $review->order_title = $orderTitle ?: ($review->order_no ?? 'คำสั่งขาย');
-                $review->display_phone = $maskedPhone;
-                $review->display_name = !empty($review->customer_name)
+                $review->order_title =
+                    $orderTitle
+                    ?: ($review->order_no ?? 'คำสั่งขาย');
+
+                $review->display_phone =
+                    $maskedPhone;
+
+                $review->display_name =
+                    !empty($review->customer_name)
                     ? $review->customer_name
                     : $maskedPhone;
-                $review->rating = max(1, min(5, (int) ($review->rating ?? 5)));
+
+                $review->rating = max(
+                    1,
+                    min(
+                        5,
+                        (int) ($review->rating ?? 5)
+                    )
+                );
 
                 return $review;
             });
@@ -253,6 +290,7 @@ class PageController extends Controller
             'saleDetailSection' => $saleDetailSection,
         ]);
     }
+
     public function sellProduct()
     {
         $banner = HomeBanner::query()
@@ -320,6 +358,9 @@ class PageController extends Controller
                                 'brand_name' =>
                                 $model->brand->name ?? '-',
 
+                                'brand_sort_order' =>
+                                (int) ($model->brand->sort_order ?? 0),
+
                                 'mobile_product_category_id' =>
                                 $model->mobile_product_category_id,
 
@@ -355,6 +396,7 @@ class PageController extends Controller
                     ->orderBy('sort_order', 'asc')
                     ->orderBy('id', 'asc');
             },
+
             'tabs.steps' => function ($query) {
                 $query->where('status', 'active')
                     ->orderBy('sort_order', 'asc')
@@ -365,15 +407,13 @@ class PageController extends Controller
             ->where('status', 'active')
             ->first();
 
-        /*
-    |--------------------------------------------------------------------------
-    | รีวิวจากคำสั่งขายจริง
-    |--------------------------------------------------------------------------
-    | ใช้เฉพาะรีวิวที่เปิดแสดงและ active
-    |--------------------------------------------------------------------------
-    */
         $reviews = DB::table('sell_order_reviews')
-            ->leftJoin('sell_orders', 'sell_order_reviews.sell_order_id', '=', 'sell_orders.id')
+            ->leftJoin(
+                'sell_orders',
+                'sell_order_reviews.sell_order_id',
+                '=',
+                'sell_orders.id'
+            )
             ->select([
                 'sell_order_reviews.id',
                 'sell_order_reviews.sell_order_id',
@@ -408,22 +448,44 @@ class PageController extends Controller
                     );
                 }
 
-                $phone = preg_replace('/\D+/', '', (string) ($review->customer_phone ?? ''));
+                $phone = preg_replace(
+                    '/\D+/',
+                    '',
+                    (string) ($review->customer_phone ?? '')
+                );
 
                 if (strlen($phone) >= 7) {
-                    $maskedPhone = substr($phone, 0, 3) . 'xxx' . substr($phone, -3);
+                    $maskedPhone =
+                        substr($phone, 0, 3)
+                        . 'xxx'
+                        . substr($phone, -3);
                 } elseif (!empty($phone)) {
-                    $maskedPhone = substr($phone, 0, 2) . 'xxx';
+                    $maskedPhone =
+                        substr($phone, 0, 2)
+                        . 'xxx';
                 } else {
                     $maskedPhone = 'สมาชิก Cashkub';
                 }
 
-                $review->order_title = $orderTitle ?: ($review->order_no ?? 'คำสั่งขาย');
-                $review->display_name = !empty($review->customer_name)
+                $review->order_title =
+                    $orderTitle
+                    ?: ($review->order_no ?? 'คำสั่งขาย');
+
+                $review->display_name =
+                    !empty($review->customer_name)
                     ? $review->customer_name
                     : $maskedPhone;
-                $review->display_phone = $maskedPhone;
-                $review->rating = max(1, min(5, (int) ($review->rating ?? 5)));
+
+                $review->display_phone =
+                    $maskedPhone;
+
+                $review->rating = max(
+                    1,
+                    min(
+                        5,
+                        (int) ($review->rating ?? 5)
+                    )
+                );
 
                 return $review;
             });
@@ -434,7 +496,6 @@ class PageController extends Controller
             'activeKey' => $activeKey,
             'reviews' => $reviews,
             'saleDetailSection' => $saleDetailSection,
-
         ]);
     }
 

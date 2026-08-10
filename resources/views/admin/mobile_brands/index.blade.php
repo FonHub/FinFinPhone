@@ -11,7 +11,9 @@
 
     <div
         class="top-bar-boxed h-[70px] z-[51] relative border-b border-white/[0.08] -mt-7 md:-mt-5 -mx-3 sm:-mx-8 px-3 sm:px-8 md:pt-0 mb-12">
+
         <div class="h-full flex items-center">
+
             <a href="{{ url('admin/') }}" class="-intro-x hidden md:flex">
                 <img alt="Logo" class="w-6" src="{{ asset('dist/images/logo.svg') }}">
                 <span class="text-white text-lg ml-3"></span>
@@ -19,8 +21,15 @@
 
             <nav aria-label="breadcrumb" class="-intro-x h-full mr-auto">
                 <ol class="breadcrumb breadcrumb-light">
-                    <li class="breadcrumb-item"><a href="{{ url('admin/') }}">สินค้า</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">แบรนด์สินค้า</li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ url('admin/') }}">
+                            สินค้า
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item active" aria-current="page">
+                        แบรนด์สินค้า
+                    </li>
                 </ol>
             </nav>
 
@@ -30,9 +39,11 @@
 
     <div class="wrapper">
         <div class="wrapper-box">
+
             @include('admin/inc_sidemenu')
 
             <div class="content">
+
                 <div class="intro-y flex items-center mt-8 mb-2">
                     <h2 class="text-lg font-medium mr-auto">
                         แบรนด์สินค้า
@@ -40,8 +51,11 @@
                 </div>
 
                 <div class="intro-y col-span-12 lg:col-span-12">
+
                     <div class="intro-y box rounded-2xl shadow-lg bg-white dark:bg-slate-800">
+
                         <div class="p-6">
+
                             <div class="p-5 bg-slate-50 dark:bg-slate-700 rounded-lg">
 
                                 @if (session('success'))
@@ -63,117 +77,245 @@
                                 @endif
 
                                 <div class="grid grid-cols-12 mt-5">
+
                                     <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
 
                                         <div class="flex justify-end mb-4">
-                                            <a href="{{ url('admin/mobile-brands/create') }}" class="btn btn-primary">
-                                                <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+
+                                            <a
+                                                href="{{ url('admin/mobile-brands/create') }}"
+                                                class="btn btn-primary">
+
+                                                <i
+                                                    data-lucide="plus"
+                                                    class="w-4 h-4 mr-2">
+                                                </i>
+
                                                 เพิ่มแบรนด์สินค้า
                                             </a>
+
                                         </div>
 
                                         <div class="table-responsive">
-                                            <table class="table table-report mt-2" id="brands-table">
+
+                                            <table
+                                                class="table table-report mt-2"
+                                                id="brands-table">
+
                                                 <thead>
                                                     <tr>
-                                                        <th class="whitespace-nowrap text-center">ลำดับ</th>
-                                                        <th class="whitespace-nowrap">ชื่อแบรนด์</th>
-                                                        <th class="whitespace-nowrap text-center">สถานะ</th>
-                                                        <th class="text-center whitespace-nowrap">ACTIONS</th>
+                                                        <th class="whitespace-nowrap text-center">
+                                                            ลำดับ
+                                                        </th>
+
+                                                        <th class="whitespace-nowrap">
+                                                            ชื่อแบรนด์
+                                                        </th>
+
+                                                        <th class="whitespace-nowrap text-center">
+                                                            สถานะ
+                                                        </th>
+
+                                                        <th class="text-center whitespace-nowrap">
+                                                            ACTIONS
+                                                        </th>
                                                     </tr>
                                                 </thead>
+
                                                 <tbody>
-                                                    @forelse ($brands as $key => $value)
+
+                                                    @forelse ($brands as $value)
+
                                                         <tr class="intro-x">
-                                                            <td class="text-center">{{ $key + 1 }}</td>
-                                                            <td>{{ $value->name }}</td>
+
                                                             <td class="text-center">
+                                                                {{ (int) $value->sort_order }}
+                                                            </td>
+
+                                                            <td>
+                                                                {{ $value->name }}
+                                                            </td>
+
+                                                            <td class="text-center">
+
                                                                 @if ((int) $value->status === 1)
+
                                                                     <span
                                                                         class="px-3 py-1 rounded-full text-white bg-success">
+
                                                                         เปิดใช้งาน
                                                                     </span>
+
                                                                 @else
+
                                                                     <span
                                                                         class="px-3 py-1 rounded-full text-white bg-danger">
+
                                                                         ปิดใช้งาน
                                                                     </span>
+
                                                                 @endif
+
                                                             </td>
+
                                                             <td class="text-center">
+
                                                                 <div
                                                                     class="flex justify-center items-center flex-wrap gap-3">
 
-                                                                    <a class="flex items-center text-primary"
+                                                                    <a
+                                                                        class="flex items-center text-primary"
                                                                         href="{{ url('admin/mobile-models/brand/' . $value->id) }}">
-                                                                        <i data-lucide="smartphone"
-                                                                            class="w-4 h-4 mr-1"></i>
+
+                                                                        <i
+                                                                            data-lucide="smartphone"
+                                                                            class="w-4 h-4 mr-1">
+                                                                        </i>
+
                                                                         ดูสินค้า
                                                                     </a>
 
-                                                                    <a class="flex items-center"
+                                                                    <a
+                                                                        class="flex items-center"
                                                                         href="{{ url('admin/mobile-brands/' . $value->id . '/edit') }}">
-                                                                        <i data-lucide="check-square"
-                                                                            class="w-4 h-4 mr-1"></i>
+
+                                                                        <i
+                                                                            data-lucide="check-square"
+                                                                            class="w-4 h-4 mr-1">
+                                                                        </i>
+
                                                                         แก้ไข
                                                                     </a>
 
-                                                                    <a href="javascript:void(0);"
+                                                                    <a
+                                                                        href="javascript:void(0);"
                                                                         class="flex items-center text-danger"
-                                                                        onclick="openDeleteModal({{ $value->id }}, '{{ addslashes($value->name) }}')">
-                                                                        <i data-lucide="trash-2"
-                                                                            class="w-4 h-4 mr-1"></i>
+                                                                        onclick="openDeleteModal(
+                                                                            {{ $value->id }},
+                                                                            '{{ addslashes($value->name) }}'
+                                                                        )">
+
+                                                                        <i
+                                                                            data-lucide="trash-2"
+                                                                            class="w-4 h-4 mr-1">
+                                                                        </i>
+
                                                                         ลบข้อมูล
                                                                     </a>
 
                                                                 </div>
+
                                                             </td>
+
                                                         </tr>
+
                                                     @empty
+
                                                         <tr>
-                                                            <td colspan="4" class="text-center text-slate-500 py-5">
+                                                            <td
+                                                                colspan="4"
+                                                                class="text-center text-slate-500 py-5">
+
                                                                 ยังไม่มีข้อมูลแบรนด์สินค้า
                                                             </td>
                                                         </tr>
+
                                                     @endforelse
+
                                                 </tbody>
+
                                             </table>
+
                                         </div>
 
                                     </div>
+
                                 </div>
 
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
     </div>
 
-    <div id="delete-confirmation-modal" class="modal" tabindex="-1" aria-hidden="true" data-tw-backdrop="static">
+    <div
+        id="delete-confirmation-modal"
+        class="modal"
+        tabindex="-1"
+        aria-hidden="true"
+        data-tw-backdrop="static">
+
         <div class="modal-dialog">
+
             <div class="modal-content">
+
                 <div class="modal-body p-0">
-                    <form method="POST" action="{{ url('admin/mobile-brands/delete') }}">
+
+                    <form
+                        method="POST"
+                        action="{{ url('admin/mobile-brands/delete') }}">
+
                         @csrf
+
                         <div class="p-5 text-center">
-                            <input type="hidden" id="delete-id" name="id">
-                            <i data-lucide="x-circle" class="w-16 h-16 text-danger mx-auto mt-3"></i>
-                            <div class="text-3xl mt-5">คุณต้องการลบข้อมูล?</div>
-                            <div class="text-slate-500 mt-2" id="delete-text">
+
+                            <input
+                                type="hidden"
+                                id="delete-id"
+                                name="id">
+
+                            <i
+                                data-lucide="x-circle"
+                                class="w-16 h-16 text-danger mx-auto mt-3">
+                            </i>
+
+                            <div class="text-3xl mt-5">
+                                คุณต้องการลบข้อมูล?
+                            </div>
+
+                            <div
+                                class="text-slate-500 mt-2"
+                                id="delete-text">
+
                                 หากลบแล้วจะไม่สามารถกู้คืนข้อมูลเดิมได้
                             </div>
+
                         </div>
+
                         <div class="px-5 pb-8 text-center">
-                            <button type="button" data-tw-dismiss="modal"
-                                class="btn btn-outline-secondary w-24 mr-1">ยกเลิก</button>
-                            <button type="submit" class="btn btn-danger w-24">ลบข้อมูล</button>
+
+                            <button
+                                type="button"
+                                data-tw-dismiss="modal"
+                                class="btn btn-outline-secondary w-24 mr-1">
+
+                                ยกเลิก
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="btn btn-danger w-24">
+
+                                ลบข้อมูล
+                            </button>
+
                         </div>
+
                     </form>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
 
     @include('admin/inc_footer')
@@ -183,26 +325,41 @@
             document.getElementById('delete-id').value = id;
 
             const deleteText = document.getElementById('delete-text');
-            deleteText.innerHTML = 'คุณต้องการลบแบรนด์สินค้า <b>' + name +
-                '</b> ใช่หรือไม่?<br>หากลบแล้วจะไม่สามารถกู้คืนข้อมูลเดิมได้';
 
-            const modalEl = document.querySelector('#delete-confirmation-modal');
-            const modal = tailwind.Modal.getOrCreateInstance(modalEl);
+            deleteText.innerHTML =
+                'คุณต้องการลบแบรนด์สินค้า <b>' +
+                name +
+                '</b> ใช่หรือไม่?<br>' +
+                'หากลบแล้วจะไม่สามารถกู้คืนข้อมูลเดิมได้';
+
+            const modalEl = document.querySelector(
+                '#delete-confirmation-modal'
+            );
+
+            const modal = tailwind.Modal.getOrCreateInstance(
+                modalEl
+            );
+
             modal.show();
         }
 
         jQuery(document).ready(function($) {
+
             $('#brands-table').DataTable({
                 responsive: true,
+
                 order: [
-                    [0, "desc"]
+                    [0, 'asc']
                 ],
+
                 language: {
-                    url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Thai.json"
+                    url: '//cdn.datatables.net/plug-ins/1.10.21/i18n/Thai.json'
                 }
             });
+
         });
     </script>
+
 </body>
 
 </html>
