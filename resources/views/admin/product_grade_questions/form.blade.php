@@ -114,10 +114,57 @@
                                 'sim' =>
                                     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 4.5h6l3 3v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2zM9.5 10.5h5M9.5 14h5"/></svg>',
 
-                                'bent' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.5 5.5h6.2v13H4.5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2zM19.5 5.5h-6.2v13h6.2a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zM10.7 5.5l2.6 13M13.3 5.5l-2.6 13M8.2 9.5l2.5 2.5-2.5 2.5M15.8 9.5L13.3 12l2.5 2.5"/></svg>',
+                                'bent' =>
+                                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4.5 5.5h6.2v13H4.5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2zM19.5 5.5h-6.2v13h6.2a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zM10.7 5.5l2.6 13M13.3 5.5l-2.6 13M8.2 9.5l2.5 2.5-2.5 2.5M15.8 9.5L13.3 12l2.5 2.5"/></svg>',
                                 's_pen' =>
                                     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.8 4.2l4 4-10.6 10.6-5 1 1-5L15.8 4.2zM13.8 6.2l4 4M4.2 19.8l3.1-3.1"/></svg>',
+                                'keyboard_touchpad' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
+        <rect x="3" y="5" width="18" height="14" rx="2" stroke-width="1.8"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+            d="M6 9h1M9 9h1M12 9h1M15 9h1M18 9h.01
+               M6 12h1M9 12h1M12 12h1M15 12h1M18 12h.01
+               M8 15h8"/>
+    </svg>',
 
+                                'usb' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+            d="M12 3v13
+               M12 7l-3-3
+               M12 7l3-3
+               M12 11h4
+               M16 11l2-2
+               M12 15H8
+               M8 15l-2 2"/>
+        <circle cx="12" cy="19" r="2" stroke-width="1.8"/>
+        <circle cx="18" cy="8" r="1" fill="currentColor" stroke="none"/>
+        <rect x="5" y="16" width="2" height="2" fill="currentColor" stroke="none"/>
+    </svg>',
+
+                                'keyboard_eng' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
+        <rect x="3" y="5" width="18" height="14" rx="2" stroke-width="1.8"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+            d="M6 9h1M9 9h1M12 9h1M15 9h1M18 9h.01
+               M6 12h1M9 12h1M12 12h1M15 12h1M18 12h.01
+               M8 15h8"/>
+        <text x="12" y="13" text-anchor="middle"
+            font-size="5" fill="currentColor" stroke="none">EN</text>
+    </svg>',
+
+                                'touch_bar' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
+        <rect x="3" y="6" width="18" height="12" rx="2" stroke-width="1.8"/>
+        <rect x="5.5" y="8.5" width="13" height="3" rx="1.2" stroke-width="1.6"/>
+        <path stroke-linecap="round" stroke-width="1.8"
+            d="M7 15h10"/>
+    </svg>',
+
+                                'screen_edge' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5">
+        <rect x="4" y="3.5" width="16" height="13" rx="2" stroke-width="1.8"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+            d="M6.5 6v8
+               M17.5 6v8
+               M8 20h8
+               M12 16.5V20"/>
+    </svg>',
                                 'other' =>
                                     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-5 h-5"><circle cx="12" cy="12" r="8" stroke-width="1.8"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8.2a2.4 2.4 0 0 1 2.4 2.2c0 1.5-1.8 2-2.4 3.1M12 16.8h.01"/></svg>',
                             ];
@@ -141,6 +188,11 @@
                                 'sim' => 'ซิม',
                                 'bent' => 'เครื่องงอ',
                                 's_pen' => 'S Pen ใช้งานไม่ได้',
+                                'keyboard_touchpad' => 'แป้นพิมพ์ / Touchpad ผิดปกติ',
+                                'usb' => 'ช่อง USB ไม่ทำงาน',
+                                'keyboard_eng' => 'คีย์บอร์ด Eng',
+                                'touch_bar' => 'Touch Bar ผิดปกติ',
+                                'screen_edge' => 'ขอบจอเสื่อม',
                                 'other' => 'อื่น ๆ',
                             ];
                         @endphp

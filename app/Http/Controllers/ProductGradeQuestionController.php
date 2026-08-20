@@ -32,6 +32,14 @@ class ProductGradeQuestionController extends Controller
         'sim',
         'bent',
         's_pen',
+
+        // MacBook / Notebook
+        'keyboard_touchpad',
+        'usb',
+        'keyboard_eng',
+        'touch_bar',
+        'screen_edge',
+
         'other',
     ];
 
